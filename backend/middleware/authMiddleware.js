@@ -19,5 +19,10 @@ module.exports = (roles = []) => {
     } catch (err) {
       res.status(401).json({ error: 'Token invalide' });
     }
+    if (roles.length && !roles.includes(decoded.role)) {
+        console.log("⛔️ Rôle NON autorisé :", decoded.role, "→ Attendu :", roles);
+        return res.status(403).json({ error: 'Accès refusé' });
+      }
+      
   };
 };
