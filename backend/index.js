@@ -1,3 +1,5 @@
+
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -8,6 +10,14 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.get('/ping', (req, res) => {
+  res.send('pong 🟢');
+});
+app.post('/test-register', (req, res) => {
+  console.log('📩 Body reçu :', req.body);
+  res.json({ message: 'Reçu !', body: req.body });
+});
+
 app.use('/auth', require('./routes/auth'));
 app.use('/tickets', require('./routes/tickets'));
 
