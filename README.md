@@ -9,7 +9,7 @@ Développée avec **Node.js**, **Express**, **Sequelize** et **PostgreSQL**.
 
 1. **Cloner le dépôt**
 ```bash
-git clone https://github.com/.../Projet_DevOps.git
+[git clone https://github.com/.../Projet_DevOps.git](https://github.com/farahyasmine/PROJET-DEVOPS.git)
 cd Projet_DevOps/backend
 ```
 
