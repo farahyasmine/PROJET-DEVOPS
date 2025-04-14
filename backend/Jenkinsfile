@@ -1,35 +1,44 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS 18'
+    }
+
     environment {
-        DOCKER_IMAGE = "devops-ticket-backend"
-        REGISTRY = "localhost:5050"
+        PORT = '5050'
+        JWT_SECRET = 'superSecretFarah'
+        DB_NAME = 'support'
+        DB_USER = 'postgres'
+        DB_PASSWORD = 'pass'
+        DB_HOST = 'localhost'
+        DB_PORT = '5432'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Cloner le repo') {
             steps {
-                checkout scm
+                git branch: 'seb-docker', credentialsId: 'github-token', url: 'https://github.com/farahyasmine/PROJET-DEVOPS.git'
             }
         }
-        stage('Build Docker Image') {
+
+        stage('Installer les dépendances') {
             steps {
-                script {
-                    sh 'docker build -t ${DOCKER_IMAGE} .'
+                dir('backend') {
+                    bat 'npm install'
                 }
             }
         }
-        stage('Run Tests') {
+
+        stage('Vérifier le code') {
             steps {
-                script {
-                    sh 'docker run ${DOCKER_IMAGE} npm test'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    sh 'docker-compose up -d'
+                dir('backend') {
+                    bat '''
+                    powershell -Command "Start-Process node index.js -WindowStyle Hidden"
+                    timeout /t 5
+                    curl -f http://localhost:5050/ping
+                    powershell -Command "Get-Process node | Stop-Process -Force"
+                    '''
                 }
             }
         }
