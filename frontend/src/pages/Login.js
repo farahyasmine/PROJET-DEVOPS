@@ -1,0 +1,61 @@
+// src/pages/Login.js
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import '../App.css';
+import { Link } from 'react-router-dom';
+
+
+function Login() {
+  const [email, setEmail] = useState('');
+  const [motDePasse, setMotDePasse] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post('http://localhost:5000/login', {
+        email,
+        motDePasse,
+      });
+
+      const { token, utilisateur } = res.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('utilisateur', JSON.stringify(utilisateur));
+      navigate('/home');
+    } catch (error) {
+      alert('Échec de la connexion. Vérifie tes identifiants.');
+      console.error(error);
+    }
+  };
+
+  return (
+    <div className="auth-container">
+      <h2>Connexion</h2>
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Adresse email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          value={motDePasse}
+          onChange={(e) => setMotDePasse(e.target.value)}
+          required
+        />
+        <button type="submit">Se connecter</button>
+        <p style={{ marginTop: '1rem' }}>
+  Pas encore de compte ? <Link to="/register" style={{ color: '#b76cf4', fontWeight: 'bold' }}>Créer un compte</Link>
+</p>
+
+      </form>
+    </div>
+  );
+}
+
+export default Login;
