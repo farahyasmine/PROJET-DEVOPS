@@ -46,6 +46,16 @@ pipeline {
             }
         }
 
+        stage('Build Frontend') {
+            steps {
+                // Assurez-vous que ce chemin correspond bien à ton dossier "frontend"
+                dir('frontend') {
+                    bat 'npm install'
+                    bat 'npm run build'
+                }
+            }
+        }
+
     }
 
     post {
