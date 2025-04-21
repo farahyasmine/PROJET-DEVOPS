@@ -24,52 +24,6 @@ pipeline {
         }
 
         stage('Lancer Docker Compose') {
-    steps {
-        script {
-            bat 'docker-compose down || exit 0'
-            bat 'docker-compose up -d --build'
-            bat 'ping -n 10 127.0.0.1 > nul' // ← ici le nouveau "timeout"
-        }
-    }
-}
-
-
-        stage('Tester l\'API') {
-            steps {
-                bat 'curl -f http://localhost:5050/ping'
-            }
-        }
-
-        // Optionnel : à activer si tu veux lancer les tests Postman via Newman
-        stage('Tester avec Newman') {
-            steps {
-                bat 'npm install -g newman'
-                bat 'newman run DevOps_Farpipeline {
-    agent any
-
-    tools {
-        nodejs 'NodeJS 18'
-    }
-
-    environment {
-        PORT = '5050'
-        JWT_SECRET = 'superSecretFarah'
-        DB_NAME = 'support'
-        DB_USER = 'postgres'
-        DB_PASSWORD = 'pass'
-        DB_HOST = 'db'
-        DB_PORT = '5432'
-    }
-
-    stages {
-
-        stage('Cloner le repo') {
-            steps {
-                git branch: 'seb-docker', credentialsId: 'github-token', url: 'https://github.com/farahyasmine/PROJET-DEVOPS.git'
-            }
-        }
-
-        stage('Lancer Docker Compose') {
             steps {
                 script {
                     bat 'docker-compose down || exit 0'
@@ -89,19 +43,6 @@ pipeline {
             steps {
                 bat 'npm install -g newman'
                 bat 'newman run DevOps_Farah.postman_collection.json --environment DevOps_Seb.postman_environment.json --bail'
-            }
-        }
-
-    }
-
-    post {
-        always {
-            echo 'Arrêt des containers Docker...'
-            bat 'docker-compose down'
-        }
-    }
-}
-ah.postman_collection.json'
             }
         }
 
