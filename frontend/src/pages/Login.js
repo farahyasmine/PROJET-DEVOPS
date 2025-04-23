@@ -22,7 +22,9 @@ function Login() {
 
       const { token, user: utilisateur } = res.data;
       localStorage.setItem('token', token);
-      localStorage.setItem('utilisateur', JSON.stringify(utilisateur));
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       navigate('/home');
     } catch (error) {
       alert('Échec de la connexion. Vérifie tes identifiants.');
