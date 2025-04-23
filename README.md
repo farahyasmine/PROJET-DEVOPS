@@ -1,77 +1,182 @@
-# 📦 Backend – DevOps Ticket App
+# 🎟️ Ticket Manager - Projet DevOps (ECE B3)
 
-Bienvenue dans la partie backend de l’application de gestion de tickets !  
-Développée avec **Node.js**, **Express**, **Sequelize** et **PostgreSQL**.
+Application web de gestion de tickets avec authentification sécurisée, développée en React (frontend), Node.js (backend), PostgreSQL (base de données), et Docker.
+
+> Projet réalisé dans le cadre du module **DevOps** à l’ECE Paris.
 
 ---
 
-## 🔧 Setup du projet
+## 🚀 Comment lancer le projet
 
-1. **Cloner le dépôt**
+### ✅ Étapes obligatoires
+
+1. **Cloner le dépôt Git**
+
 ```bash
-[git clone https://github.com/farahyasmine/PROJET-DEVOPS.git ]
-cd Projet_DevOps/backend
+git clone https://github.com/farahyasmine/PROJET-DEVOPS.git
+cd PROJET-DEVOPS
 ```
 
-2. **Créer le fichier `.env` à la racine de `/backend`**
-```env
-PORT=5050
-JWT_SECRET=superSecretFarah
-DB_NAME=support
-DB_USER=postgres
-DB_PASSWORD=pass
-DB_HOST=localhost
-DB_PORT=5432
+2. **Se positionner sur la branche `integration-front`**
+
+```bash
+git checkout integration-front
 ```
 
-3. **Lancer PostgreSQL (Docker ou local)**  
-Si tu utilises Docker :
-```bash
-docker run --name postgres-farah \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=pass \
-  -e POSTGRES_DB=support \
-  -p 5432:5432 \
-  -d postgres
+3. **Créer le fichier `.env` pour le frontend**
+
+Dans le dossier `frontend/`, crée un fichier `.env` avec ce contenu :
+
+```
+REACT_APP_API_URL=http://localhost:5050
 ```
 
-4. **Installer les dépendances**
-```bash
-npm install
-```
+> Ce fichier permet au frontend React de savoir à quelle URL accéder pour parler avec l’API backend.
 
-5. **Démarrer le serveur**
+4. **Lancer l'application avec Docker Compose**
+
+À la racine du projet, exécute :
+
 ```bash
-npm run dev
+docker compose up --build
 ```
 
 ---
 
-## 📮 API – Endpoints disponibles
+## 🔍 Résultat
 
-| Méthode | Endpoint           | Description                      | Rôle requis |
-|--------:|--------------------|----------------------------------|-------------|
-| `POST`  | `/auth/register`   | Créer un compte utilisateur      | ❌ Aucun     |
-| `POST`  | `/auth/login`      | Se connecter                     | ❌ Aucun     |
-| `POST`  | `/tickets`         | Créer un nouveau ticket          | ✅ Employe   |
-| `GET`   | `/tickets`         | Voir tous les tickets            | ✅ Tous      |
-| `PUT`   | `/tickets/:id`     | Mettre à jour un ticket          | ✅ Admin/Technicien |
-| `PUT`   | `/tickets/:id/fermer` | Fermer un ticket              | ✅ Admin/Technicien |
+Une fois le projet lancé :
+
+- 🔗 Frontend accessible sur : [http://localhost:3000](http://localhost:3000)
+- 🛠️ Backend API sur : [http://localhost:5050](http://localhost:5050)
 
 ---
 
-## 🧪 Tester rapidement avec Postman
+## 🧠 Fonctionnalités
 
-➡️ Utilise le fichier :  
-`DevOps_Farah.postman_collection.json`
-
-Pour importer tous les appels API :
-1. Ouvre Postman
-2. Clique sur "Import"
-3. Sélectionne le fichier `.json`
-4. Remplace les tokens (`<TON_TOKEN>`) manuellement si besoin
+- Création de compte & Connexion
+- Authentification sécurisée via JWT
+- Création / Visualisation des tickets
+- Interface utilisateur en React
+- API REST en Express
+- Conteneurisation avec Docker
 
 ---
 
-## 🏁 Backend opérationnel 💪
+## 🧪 Routes principales de l’API
 
+| Méthode | URL                  | Description                          |
+|---------|----------------------|--------------------------------------|
+| POST    | `/auth/register`     | Créer un compte                      |
+| POST    | `/auth/login`        | Se connecter                         |
+| GET     | `/tickets`           | Voir tous les tickets (auth requis) |
+| POST    | `/tickets`           | Créer un ticket (auth requis)       |
+
+---
+
+## 📦 Technologies utilisées
+
+- **Frontend** : React, React Router
+- **Backend** : Node.js, Express, JWT, bcrypt
+- **BDD** : PostgreSQL
+- **Outils** : Docker, Docker Compose
+
+---
+
+## 📁 Structure du projet
+
+```
+PROJET-DEVOPS/
+├── backend/
+├── frontend/
+├── docker-compose.yml
+├── start.sh
+└── README.md
+```
+
+---
+
+## ✅ Astuces
+
+- 📦 Les appels API sont centralisés dans `frontend/src/api.js`
+- 🔐 Token JWT est stocké dans `localStorage` après connexion
+- 🐳 Les logs sont visibles dans le terminal Docker
+
+---
+
+🧠 Ce que le projet fait actuellement
+🔐 Authentification
+Création d’un compte (/auth/register) avec hash du mot de passe (bcrypt)
+
+Connexion avec vérification et émission d’un JWT token
+
+Token stocké dans le localStorage côté frontend
+
+Middleware de protection sur les routes privées
+
+🎫 Gestion des tickets
+Liste des tickets accessibles si l'utilisateur est connecté
+
+Création de tickets via un formulaire React
+
+Sauvegarde des tickets dans PostgreSQL
+
+Affichage dynamique via React
+
+⚙️ Docker / DevOps
+Projet totalement conteneurisé avec Docker
+
+docker-compose.yml qui lance :
+
+frontend (React)
+
+backend (Node/Express)
+
+base de données PostgreSQL
+
+Script start.sh pour automatiser le setup
+
+✅ Ce qui fonctionne bien
+Lancement du projet complet via docker compose up --build
+
+Création de compte et enregistrement sécurisé
+
+Interface claire et fonctionnelle (connexion, tickets)
+
+Authentification avec token JWT
+
+Communication fluide frontend <-> backend
+
+🚧 Ce qu’il reste à faire
+🐛 Bugs et ajustements
+Corriger certains messages d'erreur non visibles côté frontend
+
+Gérer la déconnexion proprement (clear localStorage)
+
+Meilleure gestion des erreurs API (frontend/backend)
+
+💡 Améliorations possibles
+Ajouter des rôles utilisateur (ex : Admin peut supprimer des tickets)
+
+Ajouter la modification ou suppression de ticket
+
+Pagination / filtre des tickets
+
+Tests unitaires backend (ex : Jest, Supertest)
+
+Pipeline CI/CD GitHub Actions ou GitLab CI
+
+Sécurité : validation des champs (ex: Joi), rate limiting, helmet.js
+
+Ajout d’un design responsive avec une vraie UI framework (ex: Tailwind, Bootstrap)
+
+📌 Résumé pour un nouvel arrivant
+Si une personne reprend le projet :
+
+Elle clône, se met sur integration-front, ajoute le .env, et lance docker compose
+
+Elle peut directement créer un compte, se connecter, et créer un ticket
+
+Le projet est conteneurisé et prêt pour un déploiement
+
+Quelques fonctionnalités restent à faire mais le coeur est déjà robuste

@@ -20,7 +20,7 @@ app.post('/test-register', (req, res) => {
 
 app.use('/auth', require('./routes/auth'));
 app.use('/tickets', require('./routes/tickets'));
-
+app.use('/admin', require('./routes/admin'));
 // Sync DB
 sequelize.sync().then(() => {
   app.listen(process.env.PORT, () => {
