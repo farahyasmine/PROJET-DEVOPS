@@ -1,70 +1,140 @@
-# Getting Started with Create React App
+Parfait, on va adapter ce README pour un **vrai dépôt public GitHub**. L’idée c’est d’expliquer **tout ce que le code fait**, **comment l’utiliser**, **sans divulguer d’infos sensibles**, et en gardant un ton pro et clair. Voici une **version complète et clean** prête à être mise dans ton dépôt :
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+```md
+# 🎫 TicketApp - Application de gestion de tickets
 
-In the project directory, you can run:
+TicketApp est une application web fullstack de gestion de tickets, développée dans le cadre d’un projet DevOps à l’ECE. Elle permet aux utilisateurs de créer des comptes, de se connecter, de soumettre des tickets, et aux administrateurs de gérer l’ensemble des demandes.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📌 Fonctionnalités
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- ✅ Authentification avec JWT
+- ✅ Rôles utilisateurs : Admin & Utilisateur
+- ✅ Création, modification et suppression de tickets
+- ✅ Filtrage des tickets par utilisateur
+- ✅ Frontend React responsive
+- ✅ API sécurisée (Node.js + Express)
+- ✅ Base de données PostgreSQL
+- ✅ Conteneurisation complète avec Docker
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🧰 Stack technique
 
-### `npm run build`
+| Catégorie       | Technologie           |
+|------------------|------------------------|
+| **Frontend**     | React, React Router    |
+| **Backend**      | Node.js, Express       |
+| **Base de données** | PostgreSQL            |
+| **Auth**         | JWT, bcrypt            |
+| **Conteneurs**   | Docker, Docker Compose |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Installation & Lancement
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prérequis
 
-### `npm run eject`
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1. Cloner le dépôt
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/<ton-username>/PROJET-DEVOPS.git
+cd PROJET-DEVOPS
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2. Configuration des variables d’environnement
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Backend (`backend/.env`)
+```env
+JWT_SECRET=your_jwt_secret_key
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=ticketdb
+DB_HOST=db
+```
 
-## Learn More
+#### Frontend (`frontend/.env`)
+```env
+REACT_APP_API_URL=http://localhost:5050
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> Remplace `your_jwt_secret_key` par une clé secrète longue et unique.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 3. Lancer les services
 
-### Code Splitting
+```bash
+docker compose up --build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 4. Accès à l’application
 
-### Analyzing the Bundle Size
+- Frontend : [http://localhost:3000](http://localhost:3000)
+- Backend API : [http://localhost:5050](http://localhost:5050)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🧪 Routes principales
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 🔐 Authentification
 
-### Advanced Configuration
+| Méthode | URL             | Description              |
+|---------|------------------|--------------------------|
+| POST    | `/auth/register` | Créer un nouveau compte |
+| POST    | `/auth/login`    | Se connecter             |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 📝 Tickets
 
-### Deployment
+| Méthode | URL           | Rôle requis | Description                    |
+|---------|----------------|-------------|--------------------------------|
+| GET     | `/tickets`     | Admin       | Récupérer tous les tickets     |
+| POST    | `/tickets`     | User/Admin  | Créer un nouveau ticket        |
+| GET     | `/tickets/mine`| User        | Voir ses propres tickets       |
+| PUT     | `/tickets/:id` | Admin       | Modifier un ticket             |
+| DELETE  | `/tickets/:id` | Admin       | Supprimer un ticket            |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 📁 Structure du projet
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+PROJET-DEVOPS/
+├── backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── .env
+│   └── index.js
+├── frontend/
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── api.js
+│   ├── .env
+│   └── Dockerfile
+├── docker-compose.yml
+├── start.sh
+└── README.md
+```
+
+---
+
+## ⚙️ Commandes utiles
+
+```bash
+# Arrêter les services
+docker compose down
+
+# Supprimer les volumes (attention : cela supprime les données de la BDD)
+docker compose down --volumes
+
+# Rebuild complet
+docker compose up --build
+```
+
+---
