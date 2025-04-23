@@ -9,7 +9,7 @@ sleep 10
 
 # Vérification de la disponibilité de l'API
 echo "🔍 Vérification de l'API (/ping)..."
-if curl -f http://localhost:5050/ping; then
+if curl -sf http://localhost:5050/ping; then
   echo "✅ L'API est UP"
 else
   echo "❌ L'API ne répond pas. Arrêt du script."

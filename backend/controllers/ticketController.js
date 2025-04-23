@@ -15,8 +15,10 @@ exports.createTicket = async (req, res) => {
 
     res.status(201).json(ticket);
   } catch (err) {
+    console.error(err); // ← AJOUTE ÇA
     res.status(500).json({ error: err.message });
   }
+  
 };
 
 // Lister tous les tickets
@@ -25,9 +27,11 @@ exports.getAllTickets = async (req, res) => {
     const tickets = await Ticket.findAll();
     res.json(tickets);
   } catch (err) {
+    console.error("❌ ERREUR GET /tickets :", err); // ⬅️ ajoute ça
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Mettre à jour un ticket (par technicien ou admin)
 exports.updateTicket = async (req, res) => {

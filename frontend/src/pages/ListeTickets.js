@@ -1,6 +1,6 @@
 // src/pages/ListeTickets.js
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Navbar from './components/Navbar';
 import '../App.css';
 
@@ -10,7 +10,9 @@ function ListeTickets() {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/tickets', {
+        const res = await api.post(
+          '/tickets',
+         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }

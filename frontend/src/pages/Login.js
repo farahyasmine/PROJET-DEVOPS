@@ -1,6 +1,6 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import { Link } from 'react-router-dom';
@@ -15,12 +15,12 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:5000/login', {
+      const res = await api.post('/auth/login', {
         email,
         motDePasse,
       });
 
-      const { token, utilisateur } = res.data;
+      const { token, user: utilisateur } = res.data;
       localStorage.setItem('token', token);
       localStorage.setItem('utilisateur', JSON.stringify(utilisateur));
       navigate('/home');

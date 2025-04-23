@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Navbar from './components/Navbar';
 import '../App.css'; // Pour les styles globaux
 
@@ -11,8 +11,8 @@ function CreerTicket() {
     console.log("Tentative d'envoi du ticket...");
 
     try {
-      const res = await axios.post(
-        'http://localhost:5000/tickets',
+      const res = await api.post(
+        '/tickets',      
         {
           titre,
           description,
