@@ -6,6 +6,7 @@ import CreerTicket from './pages/CreerTicket';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import ListeTickets from './pages/ListeTickets';
+import AdminUsers from './pages/AdminUsers';
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/tickets" element={<ListeTickets />} />
         <Route path="/liste-tickets" element={<ListeTickets />} />
+        <Route path="/admin-users" element={<AdminUsers />} />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 // src/components/Navbar.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+const user = JSON.parse(localStorage.getItem("user"));
 function Navbar() {
   const navigate = useNavigate();
 
@@ -17,7 +17,12 @@ function Navbar() {
       <Link to="/creer-ticket" style={styles.link}>Créer un ticket</Link>
       <Link to="/tickets" style={styles.link}>Mes tickets</Link>
       <button onClick={handleLogout} style={styles.button}>Se déconnecter</button>
-    
+      {user?.role === "Admin" && (
+      <li className="nav-item">
+        <Link to="/admin-users" className="nav-link">Utilisateurs</Link>
+      </li>
+    )}
+        
     </nav>
   );
 }
