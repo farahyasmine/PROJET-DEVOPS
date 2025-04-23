@@ -9,6 +9,8 @@ function ListeTickets() {
   const [ticketAModifier, setTicketAModifier] = useState(null);
   const [statut, setStatut] = useState("");
   const [priorite, setPriorite] = useState("");
+  const [techniciens, setTechniciens] = useState([]);
+  const [technicienAssigné, setTechnicienAssigné] = useState({});
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -22,16 +24,28 @@ function ListeTickets() {
 
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
-          const parsedUser = JSON.parse(savedUser);
-          console.log("Utilisateur connecté :", parsedUser);
-          setUser(parsedUser);
+          setUser(JSON.parse(savedUser));
         }
       } catch (err) {
         console.error("Erreur lors du chargement des tickets :", err);
       }
     };
 
+    const fetchTechniciens = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const res = await api.get("/admin/users", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const techs = res.data.filter(u => u.role === "Technicien");
+        setTechniciens(techs);
+      } catch (err) {
+        console.error("Erreur chargement techniciens :", err);
+      }
+    };
+
     fetchTickets();
+    fetchTechniciens();
   }, []);
 
   const fermerTicket = async (id) => {
@@ -68,6 +82,21 @@ function ListeTickets() {
     }
   };
 
+  const assignerTechnicien = async (ticketId) => {
+    try {
+      await api.put(`/admin/tickets/${ticketId}/assign`, {
+        id_technicien: technicienAssigné[ticketId]
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      alert("Technicien assigné !");
+      window.location.reload();
+    } catch (err) {
+      console.error("Erreur assignation :", err);
+      alert("Erreur lors de l'assignation.");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -94,14 +123,43 @@ function ListeTickets() {
                     <span><strong>Priorité :</strong> {ticket.priorite}</span>
                   </div>
 
-                  {user && user.role === "Technicien" && (
+                  {user.role === "Technicien" && (
                     <div style={{ marginTop: "10px" }}>
                       <button onClick={() => fermerTicket(ticket.id)} className="btn-action">Fermer</button>
-                      <button onClick={() => {
-                        setTicketAModifier(ticket);
-                        setStatut(ticket.statut);
-                        setPriorite(ticket.priorite);
-                      }} className="btn-action" style={{ marginLeft: "10px" }}>Modifier</button>
+                      <button
+                        onClick={() => {
+                          setTicketAModifier(ticket);
+                          setStatut(ticket.statut);
+                          setPriorite(ticket.priorite);
+                        }}
+                        className="btn-action"
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Modifier
+                      </button>
+                    </div>
+                  )}
+
+                  {user.role === "Admin" && (
+                    <div style={{ marginTop: "10px" }}>
+                      <select
+                        value={technicienAssigné[ticket.id] || ""}
+                        onChange={e =>
+                          setTechnicienAssigné({ ...technicienAssigné, [ticket.id]: e.target.value })
+                        }
+                      >
+                        <option value="">-- Choisir un technicien --</option>
+                        {techniciens.map(t => (
+                          <option key={t.id} value={t.id}>{t.nom}</option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={() => assignerTechnicien(ticket.id)}
+                        className="btn-action"
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Assigner
+                      </button>
                     </div>
                   )}
                 </div>
@@ -134,7 +192,9 @@ function ListeTickets() {
               <br /><br />
 
               <button onClick={() => modifierTicket(ticketAModifier.id)} className="btn-save">Enregistrer</button>
-              <button onClick={() => setTicketAModifier(null)} className="btn-cancel" style={{ marginLeft: "10px" }}>Annuler</button>
+              <button onClick={() => setTicketAModifier(null)} className="btn-cancel" style={{ marginLeft: "10px" }}>
+                Annuler
+              </button>
             </div>
           )}
         </div>

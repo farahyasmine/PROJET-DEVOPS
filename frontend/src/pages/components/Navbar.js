@@ -20,6 +20,7 @@ function Navbar() {
       {user?.role === "Admin" && (
       <li className="nav-item">
         <Link to="/admin-users" className="nav-link">Utilisateurs</Link>
+        <Link to="/admin-dashboard" className="nav-link">Dashboard</Link>
       </li>
     )}
         
