@@ -6,11 +6,12 @@ import '../App.css';
 
 function ListeTickets() {
   const [tickets, setTickets] = useState([]);
+  
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const res = await api.post(
+        const res = await api.get(
           '/tickets',
          {
           headers: {
@@ -24,7 +25,10 @@ function ListeTickets() {
     };
 
     fetchTickets();
-  }, []);
+  },
+   []);
+   
+  
 
   return (
     <>
